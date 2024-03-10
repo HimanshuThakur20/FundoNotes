@@ -46,7 +46,11 @@ public class NotesServiceImpl implements NotesService{
     }
 
     @Override
-    public Mono<Void> deleteNoteById(Long id) {
-        return noteRepository.deleteById(id);
+    public Mono<Boolean> deleteNoteById(Long id) {
+        return noteRepository.findById(id)
+                .flatMap(note -> {
+                    return noteRepository.delete(note).then(Mono.just(true));
+                })
+                .switchIfEmpty(Mono.just(false));
     }
 }

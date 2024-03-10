@@ -1,30 +1,55 @@
 package com.bridgelabz.fundoo.userandnotes.response;
 
-public class Response {
+import java.util.List;
 
-    private int code;
+public class Response<T> {
+    private int status;
     private String message;
+    private T data;
 
-    public Response(int code, String message) {
+    public Response(int status, String message) {
         super();
-        this.code = code;
+        this.status = status;
         this.message = message;
     }
-    public int getCode() {
-        return code;
+
+    public Response(int status, String message, T data) {
+        super();
+        this.status = status;
+        this.message = message;
+        this.data = data;
     }
-    public void setCode(int code) {
-        this.code = code;
+
+    public int getStatus() {
+        return status;
     }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public String getMessage() {
         return message;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }
-    @Override
-    public String toString() {
-        return "Response [code=" + code + ", message=" + message + "]";
+
+    public T getData() {
+        return data;
     }
 
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "status=" + status +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

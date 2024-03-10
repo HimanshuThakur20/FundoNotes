@@ -12,5 +12,5 @@ public interface NotesService {
 
     Mono<Notes> getNoteById(Long id);
     Mono<Notes> updateNoteById(Long id, Notes note);
-    Mono<Void> deleteNoteById(Long id);
+    Mono<Boolean> deleteNoteById(Long id);
 }
