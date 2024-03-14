@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -100,13 +101,13 @@ public class NotesServiceImpl implements NotesService {
 
 
     @Override
-    public Mono<ResponseEntity<Response>>deleteNoteById(Long notesId, String token) {
+    public Mono<ResponseEntity<Response>> deleteNoteById(Long notesId, String token) {
         long userId = UserToken.verifyToken(token);
         return noteRepository.findByUserIdAndId(userId, notesId)
-                .collectList()
-                .flatMap(note -> noteRepository.deleteAll()
+                .flatMap(note -> noteRepository.deleteById(notesId)
                         .then(Mono.just(new ResponseEntity<>(new Response(204, "Note deleted successfully"), HttpStatus.OK))))
                 .switchIfEmpty(Mono.just(new ResponseEntity<>(new Response(404, "Note not found"), HttpStatus.NOT_FOUND)))
-                .onErrorResume(e -> Mono.just(new ResponseEntity<>(new Response(500, "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR)));
+                .onErrorResume(e -> Mono.just(new ResponseEntity<>(new Response(500, "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR)))
+                .next(); // Ensure only one ResponseEntity is returned
     }
 }
