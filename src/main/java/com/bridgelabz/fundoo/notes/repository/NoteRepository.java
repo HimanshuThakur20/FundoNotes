@@ -1,7 +1,6 @@
-package com.bridgelabz.fundoo.userandnotes.repository;
+package com.bridgelabz.fundoo.notes.repository;
 
-import com.bridgelabz.fundoo.userandnotes.modal.Notes;
-import org.springframework.data.r2dbc.repository.Query;
+import com.bridgelabz.fundoo.notes.modal.Notes;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -13,4 +12,10 @@ public interface NoteRepository extends R2dbcRepository<Notes, Long> {
     Flux<Notes> findByUserIdAndArchivedFalse(Long userId);
 
     Flux<Notes> findByUserIdAndArchivedTrue(Long userId);
+
+    Flux<Notes> findByUserIdAndPinnedTrue(Long userId);
+
+    Flux<Object> findByUserIdAndPinnedFalse(long userId);
+
+    Flux<Object> findByUserIdAndId(long userId, Long notesId);
 }

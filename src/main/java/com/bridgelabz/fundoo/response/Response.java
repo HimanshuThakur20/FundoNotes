@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.userandnotes.response;
+package com.bridgelabz.fundoo.response;
 
 import java.util.List;
 
