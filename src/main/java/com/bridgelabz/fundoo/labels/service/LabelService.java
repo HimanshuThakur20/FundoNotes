@@ -1,17 +1,19 @@
 package com.bridgelabz.fundoo.labels.service;
 
+import com.bridgelabz.fundoo.labels.dto.LabelDTO;
 import com.bridgelabz.fundoo.labels.modal.Labels;
-import reactor.core.publisher.Flux;
+import com.bridgelabz.fundoo.response.Response;
+import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 
 public interface LabelService {
-    Mono<Labels> createLabel(Labels label);
+    Mono<ResponseEntity<Response>> createLabel(LabelDTO labelDto, long noteId, String token);
 
-    Flux<Labels> getAllLabels();
+    Mono<ResponseEntity<? extends Object>>  getAllLabels(String token);
 
-    Mono<Labels> getLabelById(Long id);
+    Mono <ResponseEntity<Object>> getLabelByNoteId(Long noteId);
 
-    Mono<Labels> updateLabel(Long id, Labels label);
+    Mono<ResponseEntity<Response>> updateLabel(Long id, Labels label);
 
-    Mono<Void> deleteLabel(Long id);
+    Mono<ResponseEntity<Response>> deleteLabel(Long id);
 }
