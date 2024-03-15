@@ -25,4 +25,8 @@ public class Notes {
     private boolean archived;
     private boolean pinned;
     private boolean trash;
-   }
+
+    public boolean getTrash() {
+        return  this.trash;
+    }
+}

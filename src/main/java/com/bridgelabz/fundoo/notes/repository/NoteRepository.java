@@ -18,4 +18,6 @@ public interface NoteRepository extends R2dbcRepository<Notes, Long> {
     Flux<Object> findByUserIdAndPinnedFalse(long userId);
 
     Flux<Object> findByUserIdAndId(long userId, Long notesId);
+
+    Flux<Object> findByUserIdAndTrashTrue(long userId);
 }

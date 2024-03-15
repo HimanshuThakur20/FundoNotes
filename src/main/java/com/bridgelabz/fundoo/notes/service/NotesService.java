@@ -15,5 +15,5 @@ public interface NotesService {
     Mono<ResponseEntity<Response>> unpinNoteById(String token);
     Mono<ResponseEntity<Response>>getNoteById(Long noteId);
     Mono<ResponseEntity<Response>> updateNoteById(Long id, NotesDTO note);
-    Mono<ResponseEntity<Response>> deleteNoteById(Long noteId, String Token);
+    Mono<ResponseEntity<Response>> deleteNoteById(String Token);
 }

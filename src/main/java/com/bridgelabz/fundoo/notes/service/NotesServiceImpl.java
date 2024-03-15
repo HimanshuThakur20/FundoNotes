@@ -71,6 +71,7 @@ public class NotesServiceImpl implements NotesService {
                     existingNote.setTitle(noteDAO.getTitle());
                     existingNote.setContent(noteDAO.getContent());
                     existingNote.setArchived(noteDAO.isArchived());
+                    existingNote.setTrash(noteDAO.getTrash());
                     return noteRepository.save(existingNote)
                             .map(updatedNote -> new ResponseEntity<>(new Response(200, "Note updated successfully",updatedNote), HttpStatus.OK))
                             .switchIfEmpty(Mono.just(new ResponseEntity<>(new Response(404, "Note not found"), HttpStatus.NOT_FOUND)))
@@ -101,13 +102,15 @@ public class NotesServiceImpl implements NotesService {
 
 
     @Override
-    public Mono<ResponseEntity<Response>> deleteNoteById(Long notesId, String token) {
+    public Mono<ResponseEntity<Response>> deleteNoteById(String token) {
         long userId = UserToken.verifyToken(token);
-        return noteRepository.findByUserIdAndId(userId, notesId)
-                .flatMap(note -> noteRepository.deleteById(notesId)
-                        .then(Mono.just(new ResponseEntity<>(new Response(204, "Note deleted successfully"), HttpStatus.OK))))
-                .switchIfEmpty(Mono.just(new ResponseEntity<>(new Response(404, "Note not found"), HttpStatus.NOT_FOUND)))
-                .onErrorResume(e -> Mono.just(new ResponseEntity<>(new Response(500, "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR)))
-                .next(); // Ensure only one ResponseEntity is returned
+        return noteRepository.findByUserIdAndTrashTrue(userId)
+                .flatMap(note -> noteRepository.delete((Notes) note))
+                .then(Mono.just(new ResponseEntity<>(new Response(204, "Notes deleted successfully"), HttpStatus.OK)))
+                .defaultIfEmpty(new ResponseEntity<>(new Response(404, "Notes not found"), HttpStatus.NOT_FOUND))
+                .onErrorResume(e -> Mono.just(new ResponseEntity<>(new Response(500, "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR)));
     }
+
+
+
 }

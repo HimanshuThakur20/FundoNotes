@@ -52,8 +52,8 @@ public class NotesController {
         return notesService.updateNoteById(id, note);
     }
 
-    @DeleteMapping("/{noteId}/{token}")
-    public Mono<ResponseEntity<Response>> deleteNoteById(@PathVariable Long noteId, @PathVariable String token) {
-        return notesService.deleteNoteById(noteId,token);
+    @DeleteMapping("/trash/{token}")
+    public Mono<ResponseEntity<Response>> deleteNoteById(@PathVariable String token) {
+        return notesService.deleteNoteById(token);
     }
 }
